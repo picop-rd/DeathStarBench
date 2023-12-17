@@ -32,10 +32,5 @@ spec:
           name: hotel-reserv-rate
           ports:
             - containerPort: 8084
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 1000m
       restartPolicy: Always
 status: {}
