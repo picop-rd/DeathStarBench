@@ -28,7 +28,7 @@ spec:
       containers:
         - command:
             - search
-          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:latest
+          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:base
           name: hotel-reserv-search
           ports:
             - containerPort: 8082
