@@ -32,10 +32,5 @@ spec:
           name: hotel-reserv-reservation
           ports:
             - containerPort: 8087
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 1000m
       restartPolicy: Always
 status: {}

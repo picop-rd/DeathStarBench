@@ -32,10 +32,5 @@ spec:
           name: hotel-reserv-frontend
           ports:
             - containerPort: 5000
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 1000m
       restartPolicy: Always
 status: {}
