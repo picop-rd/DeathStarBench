@@ -28,7 +28,7 @@ spec:
       containers:
         - command:
             - frontend
-          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:latest
+          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:picop
           name: hotel-reserv-frontend
           ports:
             - containerPort: 5000
