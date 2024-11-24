@@ -29,7 +29,6 @@ spec:
         - command:
             - user
           image: ghcr.io/picop-rd/deathstarbench/hotelreservation:base
-          imagePullPolicy: Always          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:base
           imagePullPolicy: Always
           name: hotel-reserv-user
           ports:
