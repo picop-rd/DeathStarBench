@@ -29,8 +29,13 @@ spec:
         - command:
             - search
           image: ghcr.io/picop-rd/deathstarbench/hotelreservation:base
+          imagePullPolicy: Always          image: ghcr.io/picop-rd/deathstarbench/hotelreservation:base
+          imagePullPolicy: Always
           name: hotel-reserv-search
           ports:
             - containerPort: 8082
+          env:
+            - name: JAEGER_SAMPLE_RATIO
+              value: "1"
       restartPolicy: Always
 status: {}
