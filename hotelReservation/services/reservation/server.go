@@ -154,7 +154,10 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 			if err != nil {
 				log.Panic().Msgf("Tried to find hotelId [%v] from date [%v] to date [%v], but got error", hotelId, indate, outdate, err.Error())
 			}
+			mongoSpanFindCur, _ := opentracing.StartSpanFromContext(ctx, "mongo_find_reservation_cursor")
+			mongoSpanFindCur.SetTag("span.kind", "client")
 			err = cur.All(ctx, &reserve)
+			mongoSpanFindCur.Finish()
 			if err != nil {
 				log.Panic().Msgf("Tried to find hotelId [%v] from date [%v] to date [%v], but got error", hotelId, indate, outdate, err.Error())
 			}
