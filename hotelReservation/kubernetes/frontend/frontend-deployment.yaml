@@ -36,5 +36,21 @@ spec:
           env:
             - name: JAEGER_SAMPLE_RATIO
               value: "1"
+        - name: ingressgateway
+          image: "ghcr.io/picop-rd/ingressgateway:latest"
+          command: ['/bin/ingressgateway', '--port', '5001', '--env-id', 'main', '--destination', 'localhost:5002']
+          imagePullPolicy: Always
+          ports:
+            - name: ingressgateway
+              containerPort: 5001
+        - name: proxy
+          image: "ghcr.io/picop-rd/proxy:latest"
+          command: ['/bin/proxy', '--proxy-port', '5002', '--admin-port', '9000', '--default-addr', 'localhost:5000', '--propagate=true', '--controller-url', 'http://proxy-controller.picop-system.svc.cluster.local:8080', '--id', 'frontend']
+          imagePullPolicy: Always
+          ports:
+            - name: proxy
+              containerPort: 5002
+            - name: admin
+              containerPort: 9000
       restartPolicy: Always
 status: {}

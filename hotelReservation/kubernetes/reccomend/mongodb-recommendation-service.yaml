@@ -12,7 +12,11 @@ spec:
   ports:
     - name: "mongodb-recommendation"
       port: 27017
-      targetPort: 27017
+      targetPort: 27018
+    - name: proxy-admin
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
   selector:
     io.kompose.service: mongodb-recommendation
 status:

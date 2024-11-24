@@ -12,7 +12,11 @@ spec:
   ports:
     - name: "memcached-profile"
       port: 11211
-      targetPort: 11211
+      targetPort: 11212
+    - name: proxy-admin
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
   selector:
     io.kompose.service: memcached-profile
 status:
