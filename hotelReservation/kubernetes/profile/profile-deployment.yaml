@@ -35,6 +35,6 @@ spec:
             - containerPort: 8081
           env:
             - name: JAEGER_SAMPLE_RATIO
-              value: "1"
+              value: "0.1"
       restartPolicy: Always
 status: {}
