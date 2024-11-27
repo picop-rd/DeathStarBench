@@ -147,10 +147,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 			// memcached miss
 			log.Trace().Msgf("memcached miss")
 			reserve := make([]reservation, 0)
-			mongoSpanFind, _ := opentracing.StartSpanFromContext(ctx, "mongo_find_reservation")
-			mongoSpanFind.SetTag("span.kind", "client")
 			cur, err := c.Find(ctx, &bson.M{"hotelId": hotelId, "inDate": indate, "outDate": outdate})
-			mongoSpanFind.Finish()
 			if err != nil {
 				log.Panic().Msgf("Tried to find hotelId [%v] from date [%v] to date [%v], but got error", hotelId, indate, outdate, err.Error())
 			}
@@ -184,10 +181,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 		} else if err == memcache.ErrCacheMiss {
 			// memcached miss
 			var num number
-			mongoSpanFindOne, _ := opentracing.StartSpanFromContext(ctx, "mongo_1_find_one")
-			mongoSpanFindOne.SetTag("span.kind", "client")
 			err = c1.FindOne(ctx, &bson.M{"hotelId": hotelId}).Decode(&num)
-			mongoSpanFindOne.Finish()
 			if err != nil {
 				log.Panic().Msgf("Tried to find hotelId [%v], but got error", hotelId, err.Error())
 			}
@@ -225,15 +219,15 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 	for inDate.Before(outDate) {
 		inDate = inDate.AddDate(0, 0, 1)
 		outdate := inDate.String()[0:10]
-		mongoSpanInsert, _ := opentracing.StartSpanFromContext(ctx, "mongo_insert_reservation")
-		mongoSpanInsert.SetTag("span.kind", "client")
+		memSpanInsert, _ := opentracing.StartSpanFromContext(ctx, "mongo_insert_reservation")
+		memSpanInsert.SetTag("span.kind", "client")
 		_, err := c.InsertOne(ctx, &reservation{
 			HotelId:      hotelId,
 			CustomerName: req.CustomerName,
 			InDate:       indate,
 			OutDate:      outdate,
 			Number:       int(req.RoomNumber)})
-		mongoSpanInsert.Finish()
+		memSpanInsert.Finish()
 		if err != nil {
 			log.Panic().Msgf("Tried to insert hotel [hotelId %v], but got error", hotelId, err.Error())
 		}
