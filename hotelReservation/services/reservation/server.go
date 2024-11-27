@@ -133,10 +133,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 
 		// first check memc
 		memc_key := hotelId + "_" + inDate.String()[0:10] + "_" + outdate
-		memSpan, _ := opentracing.StartSpanFromContext(ctx, "memcached_get_reservation")
-		memSpan.SetTag("span.kind", "client")
 		item, err := s.MemcClient.Get(memc_key)
-		memSpan.Finish()
 		if err == nil {
 			// memcached hit
 			count, _ = strconv.Atoi(string(item.Value))
@@ -169,10 +166,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 		// check capacity
 		// check memc capacity
 		memc_cap_key := hotelId + "_cap"
-		memSpanCap, _ := opentracing.StartSpanFromContext(ctx, "memcached_get_capacity")
-		memSpanCap.SetTag("span.kind", "client")
 		item, err = s.MemcClient.Get(memc_cap_key)
-		memSpanCap.Finish()
 		hotel_cap := 0
 		if err == nil {
 			// memcached hit
@@ -188,10 +182,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 			hotel_cap = int(num.Number)
 
 			// write to memcache
-			memSpanSetCap, _ := opentracing.StartSpanFromContext(ctx, "memcached_set_capacity")
-			memSpanSetCap.SetTag("span.kind", "client")
 			s.MemcClient.Set(&memcache.Item{Key: memc_cap_key, Value: []byte(strconv.Itoa(hotel_cap))})
-			memSpanSetCap.Finish()
 		} else {
 			log.Panic().Msgf("Tried to get memc_cap_key [%v], but got memmcached error = %s", memc_cap_key, err)
 		}
@@ -204,10 +195,7 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 
 	// only update reservation number cache after check succeeds
 	for key, val := range memc_date_num_map {
-		memSpanSet, _ := opentracing.StartSpanFromContext(ctx, "memcached_set_reservation")
-		memSpanSet.SetTag("span.kind", "client")
 		s.MemcClient.Set(&memcache.Item{Key: key, Value: []byte(strconv.Itoa(val))})
-		memSpanSet.Finish()
 	}
 
 	inDate, _ = time.Parse(
@@ -219,15 +207,12 @@ func (s *Server) MakeReservation(ctx context.Context, req *pb.Request) (*pb.Resu
 	for inDate.Before(outDate) {
 		inDate = inDate.AddDate(0, 0, 1)
 		outdate := inDate.String()[0:10]
-		memSpanInsert, _ := opentracing.StartSpanFromContext(ctx, "mongo_insert_reservation")
-		memSpanInsert.SetTag("span.kind", "client")
 		_, err := c.InsertOne(ctx, &reservation{
 			HotelId:      hotelId,
 			CustomerName: req.CustomerName,
 			InDate:       indate,
 			OutDate:      outdate,
 			Number:       int(req.RoomNumber)})
-		memSpanInsert.Finish()
 		if err != nil {
 			log.Panic().Msgf("Tried to insert hotel [hotelId %v], but got error", hotelId, err.Error())
 		}
