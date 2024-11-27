@@ -35,7 +35,7 @@ spec:
             - containerPort: 8084
           env:
             - name: JAEGER_SAMPLE_RATIO
-              value: "1"
+              value: "0.1"
         - name: proxy
           image: "ghcr.io/picop-rd/proxy:latest"
           command: ['/bin/proxy', '--proxy-port', '8085', '--admin-port', '9000', '--default-addr', 'localhost:8084', '--propagate=true', '--controller-url', 'http://proxy-controller.picop-system.svc.cluster.local:8080', '--id', 'rate']

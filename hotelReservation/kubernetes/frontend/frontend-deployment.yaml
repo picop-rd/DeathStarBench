@@ -35,7 +35,7 @@ spec:
             - containerPort: 5000
           env:
             - name: JAEGER_SAMPLE_RATIO
-              value: "1"
+              value: "0.1"
         - name: ingressgateway
           image: "ghcr.io/picop-rd/ingressgateway:latest"
           command: ['/bin/ingressgateway', '--port', '5001', '--env-id', 'main', '--destination', 'localhost:5002']
