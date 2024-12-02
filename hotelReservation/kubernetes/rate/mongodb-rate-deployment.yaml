@@ -34,15 +34,6 @@ spec:
           volumeMounts:
             - mountPath: /data/db
               name: rate
-        - name: proxy
-          image: "ghcr.io/picop-rd/proxy:latest"
-          command: ['/bin/proxy', '--proxy-port', '27018', '--admin-port', '9000', '--default-addr', 'localhost:27017', '--propagate=false', '--controller-url', 'http://proxy-controller.picop-system.svc.cluster.local:8080', '--id', 'mongodb-rate']
-          imagePullPolicy: Always
-          ports:
-            - name: proxy
-              containerPort: 27018
-            - name: admin
-              containerPort: 9000
       restartPolicy: Always
       volumes:
         - name: rate

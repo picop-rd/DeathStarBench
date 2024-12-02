@@ -35,14 +35,5 @@ spec:
           name: hotel-reserv-reservation-mmc
           ports:
             - containerPort: 11211
-        - name: proxy
-          image: "ghcr.io/picop-rd/proxy:latest"
-          command: ['/bin/proxy', '--proxy-port', '11212', '--admin-port', '9000', '--default-addr', 'localhost:11211', '--propagate=false', '--controller-url', 'http://proxy-controller.picop-system.svc.cluster.local:8080', '--id', 'memcached-reserve']
-          imagePullPolicy: Always
-          ports:
-            - name: proxy
-              containerPort: 11212
-            - name: admin
-              containerPort: 9000
       restartPolicy: Always
 status: {}

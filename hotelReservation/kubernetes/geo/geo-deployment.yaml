@@ -36,14 +36,5 @@ spec:
           env:
             - name: JAEGER_SAMPLE_RATIO
               value: "0.1"
-        - name: proxy
-          image: "ghcr.io/picop-rd/proxy:latest"
-          command: ['/bin/proxy', '--proxy-port', '9083', '--admin-port', '9000', '--default-addr', 'localhost:8083', '--propagate=true', '--controller-url', 'http://proxy-controller.picop-system.svc.cluster.local:8080', '--id', 'geo']
-          imagePullPolicy: Always
-          ports:
-            - name: proxy
-              containerPort: 9083
-            - name: admin
-              containerPort: 9000
       restartPolicy: Always
 status: {}

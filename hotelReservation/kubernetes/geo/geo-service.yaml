@@ -11,13 +11,8 @@ metadata:
 spec:
   ports:
     - name: "8083"
-      protocol: TCP
       port: 8083
-      targetPort: 9083
-    - name: proxy-admin
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
+      targetPort: 8083
   selector:
     io.kompose.service: geo
 status:

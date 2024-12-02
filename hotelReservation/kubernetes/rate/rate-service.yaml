@@ -12,11 +12,7 @@ spec:
   ports:
     - name: "8084"
       port: 8084
-      targetPort: 8085
-    - name: proxy-admin
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
+      targetPort: 8084
   selector:
     io.kompose.service: rate
 status:

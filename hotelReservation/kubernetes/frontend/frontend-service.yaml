@@ -12,14 +12,8 @@ spec:
   type: NodePort
   ports:
     - name: "5000"
-      protocol: TCP
       port: 5000
-      targetPort: 5001
-      nodePort: 31000
-    - name: proxy-admin
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
+      targetPort: 5000
   selector:
     io.kompose.service: frontend
 status:

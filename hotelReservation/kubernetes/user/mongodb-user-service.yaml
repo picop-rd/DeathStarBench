@@ -12,11 +12,7 @@ spec:
   ports:
     - name: "mongodb-user"
       port: 27017
-      targetPort: 27018
-    - name: proxy-admin
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
+      targetPort: 27017
   selector:
     io.kompose.service: mongodb-user
 status:
